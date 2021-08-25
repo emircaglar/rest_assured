@@ -117,6 +117,33 @@ public class Zippo_test {
                                                                                //The parameter "name" was used but not defined.
                                                                               // Define parameters using the JsonPath.params(...) function
         ;
+    }
+
+    @Test
+    public void has_size_number_check(){
+        given()
+
+                .when()
+                .get("http://api.zippopotam.us/us/90210")
+                .then()
+                .body("places",hasSize(1))
+                .log().body()
+                .statusCode(200)
+        ;
+    }
+
+    @Test
+    public void combining_test(){
+
+        given()
+                .when()
+                .get("http://api.zippopotam.us/us/90210")
+                .then()
+                 .body("places[0].'place name'",equalTo("Beverly Hills"))
+                 .body("places.state",hasItem("California"))
+                 .body("places",hasSize(1))
+        ;
+
 
 
     }
