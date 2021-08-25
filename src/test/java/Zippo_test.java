@@ -69,8 +69,8 @@ public class Zippo_test {
                 .then()
                 .log().body()
                 .body("country", equalTo("United States"))//JSON path country doesn't match.
-                                                               //Expected: United Statesss
-                                                              //Actual: United States
+                //Expected: United Statesss
+                //Actual: United States
                 .statusCode(200)
         ;
 
@@ -104,5 +104,21 @@ public class Zippo_test {
 
     }
 
+    @Test
+    public void bodyJsonPath(){
+
+        given()
+
+                .when()
+                .get("http://api.zippopotam.us/us/90210")
+                .then()
+                 .log().body()
+                 .body("places[0].'place name'",equalTo("Beverly Hills"))// hir muss ich so('place name') schreiben, ansonsten sehe ich das
+                                                                               //The parameter "name" was used but not defined.
+                                                                              // Define parameters using the JsonPath.params(...) function
+        ;
+
+
+    }
 
 }
