@@ -83,12 +83,26 @@ public class Zippo_test {
                 .get("http://api.zippopotam.us/us/90210")
                 .then()
                 .log().body()
-                .body("places[0].state", equalTo("California"))//JSON path country doesn't match.
-                //Expected: United Statesss
-                //Actual: United States
+                .body("places[0].state", equalTo("California"))
+
                 .statusCode(200)
         ;
 
     }
+
+
+    @Test
+    public void calofornia_hasitem() {
+        given()
+                .when()
+                .get("http://api.zippopotam.us/us/90210")
+                .then()
+                .log().body()
+                .body("places.state", hasItem("California"))
+                .statusCode(200)
+        ;
+
+    }
+
 
 }
