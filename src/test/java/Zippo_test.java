@@ -134,7 +134,6 @@ public class Zippo_test {
 
     @Test
     public void combining_test(){
-
         given()
                 .when()
                 .get("http://api.zippopotam.us/us/90210")
@@ -143,9 +142,25 @@ public class Zippo_test {
                  .body("places.state",hasItem("California"))
                  .body("places",hasSize(1))
         ;
+    }
 
+    @Test
+    public void Path_parametre_test(){
+        given()
+                .pathParam("country","us")
+                .pathParam("zipkod","90210")
+                .log().uri()
+                .when()
+                .get("http://api.zippopotam.us/{country}/{zipkod}")
+                .then()
+                .log().body()
+                .body("places",hasSize(1))
+                .body("places.state",hasItem("California"))
 
+        ;
 
     }
+
+
 
 }
