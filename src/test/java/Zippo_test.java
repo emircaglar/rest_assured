@@ -145,7 +145,7 @@ public class Zippo_test {
     }
 
     @Test
-    public void Path_parametre_test(){
+    public void Path_parametre_test1(){
         given()
                 .pathParam("country","us")
                 .pathParam("zipkod","90210")
@@ -156,8 +156,55 @@ public class Zippo_test {
                 .log().body()
                 .body("places",hasSize(1))
                 .body("places.state",hasItem("California"))
-
         ;
+    }
+
+    @Test
+    public void Path_parametre_test2(){
+        String country="us";
+        for (int i = 90210; i <90214 ; i++) {
+            given()
+                    .pathParam("country","us")
+                    .pathParam("zipkod",i)
+                    .log().uri()
+                    .when()
+                    .get("http://api.zippopotam.us/{country}/{zipkod}")
+                    .then()
+                    .log().body()
+                    .body("places",hasSize(1))
+                    .body("places.state",hasItem("California"))
+            ;
+        }
+    }
+
+
+    @Test
+    public void Query_param_test(){
+
+            given()
+                    .param("page",1)
+                    .log().uri()
+                    .when()
+                    .get("https://gorest.co.in/public/v1/users")
+                    .then()
+                    //.log().body()
+                    .body("meta.pagination.page",equalTo(1))
+            ;
+        }
+    @Test
+    public void Query_param_test_for(){
+
+        for (int page = 1; page < 6; page++) {
+            given()
+                    .param("page",page)
+                    .log().uri()
+                    .when()
+                    .get("https://gorest.co.in/public/v1/users")
+                    .then()
+                    //.log().body()
+                    .body("meta.pagination.page",equalTo(page))
+            ;
+        }
 
     }
 
