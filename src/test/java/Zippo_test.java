@@ -1,5 +1,11 @@
 
+import io.restassured.builder.RequestSpecBuilder;
+import io.restassured.builder.ResponseSpecBuilder;
+import io.restassured.filter.log.LogDetail;
 import io.restassured.http.ContentType;
+import io.restassured.specification.RequestSpecification;
+import io.restassured.specification.ResponseSpecification;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import static io.restassured.RestAssured.*;
@@ -105,109 +111,188 @@ public class Zippo_test {
     }
 
     @Test
-    public void bodyJsonPath(){
+    public void bodyJsonPath() {
 
         given()
 
                 .when()
                 .get("http://api.zippopotam.us/us/90210")
                 .then()
-                 .log().body()
-                 .body("places[0].'place name'",equalTo("Beverly Hills"))// hir muss ich so('place name') schreiben, ansonsten sehe ich das
-                                                                               //The parameter "name" was used but not defined.
-                                                                              // Define parameters using the JsonPath.params(...) function
+                .log().body()
+                .body("places[0].'place name'", equalTo("Beverly Hills"))// hir muss ich so('place name') schreiben, ansonsten sehe ich das
+        //The parameter "name" was used but not defined.
+        // Define parameters using the JsonPath.params(...) function
         ;
     }
 
     @Test
-    public void has_size_number_check(){
+    public void has_size_number_check() {
         given()
 
                 .when()
                 .get("http://api.zippopotam.us/us/90210")
                 .then()
-                .body("places",hasSize(1))
+                .body("places", hasSize(1))
                 .log().body()
                 .statusCode(200)
         ;
     }
 
     @Test
-    public void combining_test(){
+    public void combining_test() {
         given()
                 .when()
                 .get("http://api.zippopotam.us/us/90210")
                 .then()
-                 .body("places[0].'place name'",equalTo("Beverly Hills"))
-                 .body("places.state",hasItem("California"))
-                 .body("places",hasSize(1))
+                .body("places[0].'place name'", equalTo("Beverly Hills"))
+                .body("places.state", hasItem("California"))
+                .body("places", hasSize(1))
         ;
     }
 
     @Test
-    public void Path_parametre_test1(){
+    public void Path_parametre_test1() {
         given()
-                .pathParam("country","us")
-                .pathParam("zipkod","90210")
+                .pathParam("country", "us")
+                .pathParam("zipkod", "90210")
                 .log().uri()
                 .when()
                 .get("http://api.zippopotam.us/{country}/{zipkod}")
                 .then()
                 .log().body()
-                .body("places",hasSize(1))
-                .body("places.state",hasItem("California"))
+                .body("places", hasSize(1))
+                .body("places.state", hasItem("California"))
         ;
     }
 
     @Test
-    public void Path_parametre_test2(){
-        String country="us";
-        for (int i = 90210; i <90214 ; i++) {
+    public void Path_parametre_test2() {
+        String country = "us";
+        for (int i = 90210; i < 90214; i++) {
             given()
-                    .pathParam("country","us")
-                    .pathParam("zipkod",i)
+                    .pathParam("country", "us")
+                    .pathParam("zipkod", i)
                     .log().uri()
                     .when()
                     .get("http://api.zippopotam.us/{country}/{zipkod}")
                     .then()
                     .log().body()
-                    .body("places",hasSize(1))
-                    .body("places.state",hasItem("California"))
+                    .body("places", hasSize(1))
+                    .body("places.state", hasItem("California"))
             ;
         }
     }
 
 
     @Test
-    public void Query_param_test(){
+    public void Query_param_test() {
 
-            given()
-                    .param("page",1)
-                    .log().uri()
-                    .when()
-                    .get("https://gorest.co.in/public/v1/users")
-                    .then()
-                    //.log().body()
-                    .body("meta.pagination.page",equalTo(1))
-            ;
-        }
+        given()
+                .param("page", 1)
+                .log().uri()
+                .when()
+                .get("https://gorest.co.in/public/v1/users")
+                .then()
+                //.log().body()
+                .body("meta.pagination.page", equalTo(1))
+        ;
+    }
+
     @Test
-    public void Query_param_test_for(){
+    public void Query_param_test_for() {
 
         for (int page = 1; page < 6; page++) {
             given()
-                    .param("page",page)
+                    .param("page", page)
                     .log().uri()
                     .when()
                     .get("https://gorest.co.in/public/v1/users")
                     .then()
                     //.log().body()
-                    .body("meta.pagination.page",equalTo(page))
+                    .body("meta.pagination.page", equalTo(page))
             ;
         }
 
     }
 
 
+    private ResponseSpecification responseSpecification;
+    private RequestSpecification resquestSpecification;
 
+    @BeforeClass
+    public void setup() {
+
+        baseURI = "http://api.zippopotam.us";
+
+        resquestSpecification = new RequestSpecBuilder()
+                .log(LogDetail.URI)
+                .setAccept(ContentType.JSON)
+                .build();
+
+        responseSpecification = new ResponseSpecBuilder()
+                .expectStatusCode(200)
+                .expectContentType(ContentType.JSON)
+                .log(LogDetail.BODY)
+                .build();
+
+    }
+
+    @Test
+    public void has_size_number_Url_mit_Befor() {
+        given()
+
+                .when()
+                .get("/us/90210")// wir haben keine url , deswegen bekommen wir url von @BeforClass
+                .then()
+                .body("places", hasSize(1))
+                .log().body()
+                .statusCode(200)
+        ;
+    }
+
+    @Test
+    public void has_size_number_Url_mit_Befor_space() {
+        given()
+                .spec(resquestSpecification)
+                .when()
+                .get("/us/90210")// wir haben keine url , deswegen bekommen wir url von @BeforClass
+                .then()
+                .body("places", hasSize(1))
+                .spec(responseSpecification);
+    }
+
+/*
+    @Test
+    public void extracting_Json_String() {
+
+        String place_name=// wir machen Strin und given methon gleich
+
+        given()
+                .spec(resquestSpecification)
+                .when()
+                .get("/us/90210")// wir haben keine url , deswegen bekommen wir url von @BeforClass
+                .then()
+                .spec(responseSpecification)
+                //.body("places[0].'place name'", equalTo(""))// wir nehmen draußen
+                .extract().path("places[0].'place name'")// extract muss immer am ende sein
+               ;
+
+        System.out.println("place name = " + place_name);
+
+
+    }
+    @Test
+    public void Query_Cast_test_int() {
+        int limit=
+        given()
+                //.log().uri()
+                .when()
+                .get("https://gorest.co.in/public/v1/users")
+                .then()
+                //.log().body()
+                .extract().path("meta.pagination.limit" )
+                ;
+        System.out.println("limit = " + limit);
+    }
+*/
 }
