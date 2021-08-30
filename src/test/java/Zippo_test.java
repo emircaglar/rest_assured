@@ -5,8 +5,11 @@ import io.restassured.filter.log.LogDetail;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
+import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+
+import java.util.List;
 
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
@@ -261,7 +264,7 @@ public class Zippo_test {
                 .spec(responseSpecification);
     }
 
-/*
+
     @Test
     public void extracting_Json_String() {
 
@@ -294,5 +297,38 @@ public class Zippo_test {
                 ;
         System.out.println("limit = " + limit);
     }
-*/
+
+
+    @Test
+    public void Query_Cast_test_int_List() {
+        List<Integer> listId =
+                given()
+                        //.log().uri()
+                        .when()
+                        .get("https://gorest.co.in/public/v1/users")
+                        .then()
+                        .log().body()
+                        .extract().path("data.id");
+        System.out.println("listId = " + listId);
+    }
+
+
+    @Test
+    public void extracting_Json_String_List() {
+
+        List<String> Dorfen =// wir bekommen List von der Stadt Adana in der Turkei
+
+                given()
+                        .when()
+                        .get("/tr/01000")// wir haben keine url , deswegen bekommen wir url von @BeforClass
+                        .then()
+                        //.body("places[0].'place name'", equalTo(""))// wir nehmen draußen
+                        .extract().path("places.'place name'")// extract muss immer am ende sein
+                ;
+
+        System.out.println("Dorfen= " + Dorfen);
+        Assert.assertTrue(Dorfen.contains("Sarihuğlar Köyü"));
+
+
+    }
 }
