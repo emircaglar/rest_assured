@@ -1,6 +1,10 @@
 package POJO;
 
 public class Pj {
+    private Integer userId;
+    private String id;
+    private String title;
+    private boolean completed;
 
 
     public Integer getUserId() {
@@ -11,7 +15,7 @@ public class Pj {
         this.userId = userId;
     }
 
-    private Integer userId;
+
 
     @Override
     public String toString() {
@@ -22,10 +26,6 @@ public class Pj {
                 ", completed=" + completed +
                 '}';
     }
-
-    private String id;
-    private String title;
-    private boolean completed;
 
 
 
@@ -42,10 +42,6 @@ public class Pj {
     public void setCompleted(boolean completed) {
         this.completed = completed;
     }
-
-
-
-
 
     public String getId() {
         return id;

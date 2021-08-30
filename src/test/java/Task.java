@@ -1,8 +1,11 @@
+import POJO.List_POJO;
 import POJO.Location;
 import POJO.Pj;
 import io.restassured.http.ContentType;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import java.util.List;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.*;
@@ -135,4 +138,51 @@ public class Task {
         System.out.println("pj.getUserId() = " + pj.getUserId());
 
     }
+
+    /** Task 7
+     * create a request to https://jsonplaceholder.typicode.com/todos
+     * expect status 200
+     * Converting Array Into Array of POJOs
+     */
+    @Test
+    public void test7() {
+      
+        List_POJO list_pojo=
+                given()
+                        .when()
+                        .get("https://jsonplaceholder.typicode.com/todos")
+                        .then()
+                        .statusCode(200)
+                        .contentType(ContentType.JSON)
+                       // .log().body()
+                         .extract().as(List_POJO.class)
+                ;
+
+        for (int i = 0; i <list_pojo.getPj_list().size(); i++) {
+            System.out.println(list_pojo.getPj_list().get(i).getId());
+        }
+
+    }
+
+    @Test
+    public void test8() {
+
+        List<String> pojo=
+                given()
+                        .when()
+                        .get("https://jsonplaceholder.typicode.com/todos")
+                        .then()
+                        .statusCode(200)
+                        .contentType(ContentType.JSON)
+                        // .log().body()
+                        .extract().path("title")
+                ;
+
+        for (int i = 0; i <pojo.size() ; i++) {
+            System.out.println( pojo.get(i));
+        }
+
+    }
+
+
 }
