@@ -2,7 +2,7 @@ package POJO;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Places {
+public class Place {
     String placename;
     String longitude;
     String state;
@@ -25,7 +25,7 @@ public class Places {
     public void setLatitude(String latitude) {
         this.latitude = latitude;
     }
-    @JsonProperty("statea bbreviation")
+    @JsonProperty("state abbreviation")
     public void setStateabbreviation(String stateabbreviation) {
         this.stateabbreviation = stateabbreviation;
     }

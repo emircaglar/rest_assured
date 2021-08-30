@@ -1,4 +1,5 @@
 
+import POJO.Location;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.filter.log.LogDetail;
@@ -329,6 +330,27 @@ public class Zippo_test {
         System.out.println("Dorfen= " + Dorfen);
         Assert.assertTrue(Dorfen.contains("Sarihuğlar Köyü"));
 
+    }
+
+    @Test
+    public void extracting_Json_String_POJO() {
+
+        Location location =// wir bekommen List von der Stadt Adana in der Turkei
+
+                given()
+                        .when()
+                        .get("/us/90210")// wir haben keine url , deswegen bekommen wir url von @BeforClass
+                        .then()
+                        //.body("places[0].'place name'", equalTo(""))// wir nehmen draußen
+                        .extract().as(Location.class)// extract muss immer am ende sein
+                ;
+
+        System.out.println("location = " + location);
+        System.out.println("location.getCountry() = " + location.getCountry());
+        System.out.println("location.getPlaces() = " + location.getPlaces());
+        System.out.println("location.getPostcode()= " + location.getPostcode());
 
     }
+
+
 }
