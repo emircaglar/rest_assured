@@ -3,11 +3,14 @@ package GoRest;
 
 import GoRest.User.User;
 import io.restassured.http.ContentType;
+import io.restassured.response.Response;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
 import org.testng.annotations.Test;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
@@ -123,6 +126,56 @@ public class GoRestUserTest {
         System.out.println(UserId+"tekrar silemedik");
     }
 
+
+    @Test
+    public void responsSample(){
+
+        Response response=
+                given()
+                .when()
+                .get("https://gorest.co.in/public/v1/users")
+                .then()
+                .log().body()
+                .extract().response()
+                ;
+
+        List<User>userList=response.jsonPath().getList("data",User.class);
+        int total=response.jsonPath().getInt("meta.pagination.total");
+        int limit=response.jsonPath().getInt("meta.pagination.limit");
+        User firstUser=response.jsonPath().getObject("data[0]",User.class);
+
+        System.out.println("firstUser = " + firstUser);
+        System.out.println("limit = " + limit);
+        System.out.println("total = " + total);
+        System.out.println("userList = " + userList);
+
+
+    }
+
+
+
+    @Test
+    public void create_HashMap() {
+     Map<String,String> newUser=new HashMap<>();
+     newUser.put("name","mert can");
+     newUser.put("gender","male");
+     newUser.put("status","active");
+     newUser.put("email",getEmail());
+
+        UserId =
+                given()
+                        .header("Authorization", "Bearer e77d719430c52f24f35e308c36023cfcd90108263e454b1fe8ebda8221624570")
+                        .contentType(ContentType.JSON)
+                        .body(newUser)
+                        .when()
+                        .post("https://gorest.co.in/public/v1/users")
+                        .then()
+                        .log().body()
+                        .statusCode(201)
+                        .extract().jsonPath().getInt("data.id")
+        ;
+        //System.out.println("UserId = " + UserId);
+    }
 
     public String getEmail() {
         String random = RandomStringUtils.randomAlphabetic(8).toLowerCase();
