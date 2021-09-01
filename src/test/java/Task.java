@@ -1,14 +1,12 @@
-import POJO.List_POJO;
-import POJO.Location;
-import POJO.Pj;
+import POJO.Todo;
 import io.restassured.http.ContentType;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static io.restassured.RestAssured.given;
-import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
 
 public class Task {
@@ -121,7 +119,7 @@ public class Task {
 
     @Test
     public void test6() {
-       Pj pj=
+       Todo name=
         given()
                 .when()
                 .get("https://jsonplaceholder.typicode.com/todos/2")
@@ -129,15 +127,16 @@ public class Task {
                 .statusCode(200)
                 .contentType(ContentType.JSON)
                 .log().body()
-                .extract().as(Pj.class)
+                .extract().as(Todo.class)
         ;
 
-        System.out.println("pj.getId() = " + pj.getId());
-        System.out.println("pj.getTitle() = " + pj.getTitle());
-        System.out.println("pj.isCompleted() = " + pj.isCompleted());
-        System.out.println("pj.getUserId() = " + pj.getUserId());
+        System.out.println("pj.getId() = " + name.getId());
+        System.out.println("pj.getTitle() = " + name.getTitle());
+        System.out.println("pj.isCompleted() = " + name.isCompleted());
+        System.out.println("pj.getUserId() = " + name.getUserId());
 
     }
+
 
     /** Task 7
      * create a request to https://jsonplaceholder.typicode.com/todos
@@ -146,42 +145,43 @@ public class Task {
      */
     @Test
     public void test7() {
-      
-        List_POJO list_pojo=
+
+        Todo[] todo=
                 given()
                         .when()
                         .get("https://jsonplaceholder.typicode.com/todos")
                         .then()
                         .statusCode(200)
                         .contentType(ContentType.JSON)
-                       // .log().body()
-                         .extract().as(List_POJO.class)
+                       .log().body()
+                         .extract().as(Todo[].class)
                 ;
 
-        for (int i = 0; i <list_pojo.getPj_list().size(); i++) {
-            System.out.println(list_pojo.getPj_list().get(i).getId());
-        }
+        System.out.println("Arrays.toString(todo) = " + Arrays.toString(todo));
 
     }
 
+
+    /** Task 8
+     * create a request to https://jsonplaceholder.typicode.com/todos
+     * expect status 200
+     * Converting Array Into List of POJOs
+     */
     @Test
     public void test8() {
-
-        List<String> pojo=
+        Todo[] todo=
                 given()
                         .when()
                         .get("https://jsonplaceholder.typicode.com/todos")
                         .then()
                         .statusCode(200)
                         .contentType(ContentType.JSON)
-                        // .log().body()
-                        .extract().path("title")
+                        .extract().as(Todo[].class)
                 ;
 
-        for (int i = 0; i <pojo.size() ; i++) {
-            System.out.println( pojo.get(i));
-        }
-
+        List<Todo> todolist=Arrays.asList(todo);
+        System.out.println("Arrays.toString(todo) = " + Arrays.toString(todo));
+        System.out.println("todolist = " + todolist);
     }
 
 

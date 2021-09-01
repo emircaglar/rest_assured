@@ -1,6 +1,6 @@
 package POJO;
 
-public class Pj {
+public class Todo {
     private Integer userId;
     private String id;
     private String title;

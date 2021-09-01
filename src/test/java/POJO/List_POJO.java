@@ -6,13 +6,13 @@ import java.util.List;
 
 public class List_POJO {
 
-    private List<Pj> pj_list;
+    private List<Todo> pj_list;
 
-    public List<Pj> getPj_list() {
+    public List<Todo> getPj_list() {
         return pj_list;
     }
 
-    public void setPj_list(List<Pj> pj_list) {
+    public void setPj_list(List<Todo> pj_list) {
         this.pj_list = pj_list;
     }
 
