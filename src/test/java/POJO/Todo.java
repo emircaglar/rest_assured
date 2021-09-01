@@ -15,22 +15,6 @@ public class Todo {
         this.userId = userId;
     }
 
-
-
-    @Override
-    public String toString() {
-        return "Pj{" +
-                "userId=" + userId +
-                ", id='" + id + '\'' +
-                ", title='" + title + '\'' +
-                ", completed=" + completed +
-                '}';
-    }
-
-
-
-
-
     public void setId(String id) {
         this.id = id;
     }
@@ -55,9 +39,15 @@ public class Todo {
         return completed;
     }
 
-
-
-
+    @Override
+    public String toString() {
+        return "Pj{" +
+                "userId=" + userId +
+                ", id='" + id + '\'' +
+                ", title='" + title + '\'' +
+                ", completed=" + completed +
+                '}';
+    }
 
 
 

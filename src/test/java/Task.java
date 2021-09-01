@@ -180,7 +180,7 @@ public class Task {
                 ;
 
         List<Todo> todolist=Arrays.asList(todo);
-        System.out.println("Arrays.toString(todo) = " + Arrays.toString(todo));
+        System.out.println("Arrays.toString(todo) = " + Arrays.toString(todo));// ist ist nicht Array
         System.out.println("todolist = " + todolist);
     }
 

@@ -349,6 +349,7 @@ public class Zippo_test {
         System.out.println("location.getCountry() = " + location.getCountry());
         System.out.println("location.getPlaces() = " + location.getPlaces());
         System.out.println("location.getPostcode()= " + location.getPostcode());
+        System.out.println("location.getPostcode()= " + location.getPlaces().get(0));
 
 
     }

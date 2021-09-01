@@ -14,7 +14,7 @@ import static org.hamcrest.Matchers.*;
 
 
 public class GoRestUserTest {
-
+/*
     @Test
     public void getUsers() {
 
@@ -35,10 +35,10 @@ public class GoRestUserTest {
             System.out.println("user = " + user);
         }
     }
-
+*/
     int UserId;
 
-    @Test
+    @Test(priority = 1)
     public void create_User() {
 
         UserId =
@@ -55,7 +55,8 @@ public class GoRestUserTest {
         ;
         //System.out.println("UserId = " + UserId);
     }
-    @Test(dependsOnMethods = "create_User")
+
+    @Test(priority = 2)
     public void get_User() {
         given()
                 .contentType(ContentType.JSON)
@@ -69,7 +70,7 @@ public class GoRestUserTest {
                 .body("data.id", equalTo(UserId))
         ;
     }
-    @Test(dependsOnMethods = "create_User")
+    @Test(priority = 3)
     public void update_user() {
 
         String isim="daniel";
@@ -86,6 +87,40 @@ public class GoRestUserTest {
                 .statusCode(200)
                 .body("data.name", equalTo(isim))
         ;
+    }
+    @Test(priority = 4)
+    public void delete_user() {
+
+        given()
+                .contentType(ContentType.JSON)
+                .log().uri()
+                .header("Authorization", "Bearer e77d719430c52f24f35e308c36023cfcd90108263e454b1fe8ebda8221624570")
+                .pathParam("id", UserId)
+                .when()
+                .delete("https://gorest.co.in/public/v1/users/{id}")
+                //https://gorest.co.in/public/v1/users/1877 pathParam
+                //https://gorest.co.in/public/v1/users/%7Bid%7D?id=1889    param
+                .then()
+                .statusCode(204)
+        ;
+        System.out.println("silindi");
+    }
+
+
+    @Test(priority = 5)
+    public void negati_delete_user() {
+
+        given()
+                .header("Authorization", "Bearer e77d719430c52f24f35e308c36023cfcd90108263e454b1fe8ebda8221624570")
+                .pathParam("userID",UserId)
+
+                .when()
+                .delete("https://gorest.co.in/public/v1/users/{userID}")
+
+                .then()
+                .statusCode(404)
+        ;
+        System.out.println(UserId+"tekrar silemedik");
     }
 
 
