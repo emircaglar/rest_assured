@@ -24,7 +24,6 @@ public class GoRestUserTest {
 
                         .when()
                         .get("https://gorest.co.in/public/v1/users")
-
                         .then()
                         .statusCode(200)
                         .contentType(ContentType.JSON)
@@ -37,7 +36,6 @@ public class GoRestUserTest {
         }
     }
 
-
     int UserId;
 
     @Test
@@ -45,7 +43,6 @@ public class GoRestUserTest {
 
         UserId =
                 given()
-
                         .header("Authorization", "Bearer e77d719430c52f24f35e308c36023cfcd90108263e454b1fe8ebda8221624570")
                         .contentType(ContentType.JSON)
                         .body("{\"name\":\"merthan aga\", \"gender\":\"male\", \"email\":\"" + getEmail() + "\", \"status\":\"active\"}")
@@ -55,19 +52,12 @@ public class GoRestUserTest {
                         .log().body()
                         .statusCode(201)
                         .extract().jsonPath().getInt("data.id")
-
         ;
-
         //System.out.println("UserId = " + UserId);
     }
-
     @Test(dependsOnMethods = "create_User")
     public void get_User() {
-
-
         given()
-
-
                 .contentType(ContentType.JSON)
                 .log().uri()
                 .pathParam("id", UserId)
@@ -77,21 +67,13 @@ public class GoRestUserTest {
                 .log().body()
                 .statusCode(200)
                 .body("data.id", equalTo(UserId))
-
-
         ;
-
-
     }
-
-
     @Test(dependsOnMethods = "create_User")
     public void update_user() {
 
         String isim="daniel";
         given()
-
-
                 .contentType(ContentType.JSON)
                 //.log().body()
                 .header("Authorization", "Bearer e77d719430c52f24f35e308c36023cfcd90108263e454b1fe8ebda8221624570")
@@ -103,18 +85,12 @@ public class GoRestUserTest {
                 .log().body()
                 .statusCode(200)
                 .body("data.name", equalTo(isim))
-
-
         ;
-
-
     }
 
 
     public String getEmail() {
-
         String random = RandomStringUtils.randomAlphabetic(8).toLowerCase();
-
         return random + "@gmail.com";
     }
 }
