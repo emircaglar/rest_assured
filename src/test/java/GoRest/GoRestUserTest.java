@@ -155,7 +155,7 @@ public class GoRestUserTest {
 
 
     @Test
-    public void create_HashMap() {
+    public void create_User_HashMap() {
      Map<String,String> newUser=new HashMap<>();
      newUser.put("name","mert can");
      newUser.put("gender","male");
@@ -176,6 +176,32 @@ public class GoRestUserTest {
         ;
         //System.out.println("UserId = " + UserId);
     }
+
+    @Test
+    public void create_User_Body_Object() {
+        User user=new User();
+        user.setName("mahirrr");
+        user.setGender("male");
+        user.setStatus("active");
+        user.setEmail(getEmail());
+
+        UserId =
+                given()
+                        .header("Authorization", "Bearer e77d719430c52f24f35e308c36023cfcd90108263e454b1fe8ebda8221624570")
+                        .contentType(ContentType.JSON)
+                        .body(user)
+                        .log().body()
+                        .when()
+                        .post("https://gorest.co.in/public/v1/users")
+                        .then()
+                        .statusCode(201)
+                        .contentType(ContentType.JSON)
+                        .extract().jsonPath().getInt("data.id")
+        ;
+
+    }
+
+
 
     public String getEmail() {
         String random = RandomStringUtils.randomAlphabetic(8).toLowerCase();
