@@ -53,6 +53,29 @@ public class GoRestcommentsTest {
         System.out.println("email_List = " + email_List);
         Assert.assertTrue(email_List.contains("dubashi_lavanya@murphy.com"));
     }
+    @Test
+    public void comments_all_responce_path() {
+
+        String previus=
+                given()
+                        .when()
+                        .get("https://gorest.co.in/public/v1/comments")
+                        .then()
+                        //.log().body()
+                        .extract().jsonPath().get("meta.pagination.links.previus")
+                ;
+
+        List<String>body_list=
+                given()
+                        .when()
+                        .get("https://gorest.co.in/public/v1/comments")
+                        .then()
+                        //.log().body()
+                        .extract().jsonPath().getList("data.body")
+                ;
+        System.out.println("previus = " + previus);
+        System.out.println("body_list = " + body_list);
+    }
 
     @Test
     public void comments_all_responce() {
