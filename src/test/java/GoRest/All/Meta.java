@@ -3,20 +3,20 @@ package GoRest.All;
 import java.util.List;
 
 public class Meta {
-   private List<Data> metalist;
+   private Pagination pagination;
 
-    public List<Data> getMetalist() {
-        return metalist;
+    public Pagination getPagination() {
+        return pagination;
     }
 
-    public void setMetalist(List<Data> metalist) {
-        this.metalist = metalist;
+    public void setPagination(Pagination pagination) {
+        this.pagination = pagination;
     }
 
     @Override
     public String toString() {
         return "Meta{" +
-                "metalist=" + metalist +
+                "pagination=" + pagination +
                 '}';
     }
 }

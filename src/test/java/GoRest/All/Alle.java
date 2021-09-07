@@ -3,30 +3,30 @@ package GoRest.All;
 import java.util.List;
 
 public class Alle {
-    private List<Pagination> datalist;
-    private List<Data> metalist;
+    private Meta meta;
+    private Data data;
 
-    public List<Pagination> getDatalist() {
-        return datalist;
+    public Meta getMeta() {
+        return meta;
     }
 
-    public void setDatalist(List<Pagination> datalist) {
-        this.datalist = datalist;
+    public void setMeta(Meta meta) {
+        this.meta = meta;
     }
 
-    public List<Data> getMetalist() {
-        return metalist;
+    public Data getData() {
+        return data;
     }
 
-    public void setMetalist(List<Data> metalist) {
-        this.metalist = metalist;
+    public void setData(Data data) {
+        this.data = data;
     }
 
     @Override
     public String toString() {
         return "Alle{" +
-                "datalist=" + datalist +
-                ", metalist=" + metalist +
+                "meta=" + meta +
+                ", data=" + data +
                 '}';
     }
 }
