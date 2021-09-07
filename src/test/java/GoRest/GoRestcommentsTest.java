@@ -1,5 +1,6 @@
 package GoRest;
 
+import GoRest.All.Alle;
 import GoRest.All.Pagination;
 import GoRest.All.Link;
 import io.restassured.response.Response;
@@ -93,5 +94,21 @@ public class GoRestcommentsTest {
         System.out.println("previus = " + previus);
         List<String>body_list=response.jsonPath().get("data.body");
         System.out.println("body_list = " + body_list);
+
+    }
+    @Test
+    public void comments_all_lang_version() {
+
+        Alle alle=
+                given()
+                        .when()
+                        .get("https://gorest.co.in/public/v1/comments")
+                        .then()
+                        //.log().body()
+                        .extract().as(Alle.class)
+                ;
+
+        System.out.println("getCurrent = " + alle.getMeta().getPagination().getLinks().getCurrent());
+
     }
 }

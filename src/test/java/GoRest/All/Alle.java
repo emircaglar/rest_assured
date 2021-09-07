@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Alle {
     private Meta meta;
-    private Data data;
+    private List<Data> data;
 
     public Meta getMeta() {
         return meta;
@@ -14,11 +14,11 @@ public class Alle {
         this.meta = meta;
     }
 
-    public Data getData() {
+    public List<Data> getData() {
         return data;
     }
 
-    public void setData(Data data) {
+    public void setData(List<Data> data) {
         this.data = data;
     }
 

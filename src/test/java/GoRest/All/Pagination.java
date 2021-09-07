@@ -8,11 +8,11 @@ public class Pagination {
  private int pages;
  private int limit;
  private int page;
- private List<Link> links;
+ private Link links;
 
     @Override
     public String toString() {
-        return "Data{" +
+        return "Pagination{" +
                 "total=" + total +
                 ", pages=" + pages +
                 ", limit=" + limit +
@@ -53,11 +53,11 @@ public class Pagination {
         this.page = page;
     }
 
-    public List<Link> getLinks() {
+    public Link getLinks() {
         return links;
     }
 
-    public void setLinks(List<Link> links) {
+    public void setLinks(Link links) {
         this.links = links;
     }
 }
