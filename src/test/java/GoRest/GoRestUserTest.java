@@ -5,7 +5,6 @@ import GoRest.User.User;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.commons.lang3.RandomUtils;
 import org.testng.annotations.Test;
 
 import java.util.HashMap;
@@ -207,4 +206,5 @@ public class GoRestUserTest {
         String random = RandomStringUtils.randomAlphabetic(8).toLowerCase();
         return random + "@gmail.com";
     }
+
 }
