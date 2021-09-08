@@ -23,18 +23,20 @@ public class GoRestNES {
     @Test (priority = 1)
     public void goRestComments_nested() {
         Data d=new Data();
-        d.setName("ertan");
+        d.setName(name_nachname());
         d.setEmail(getEmail());
-        d.setBody("ddddd");
+        d.setBody(comment());
      _id=
                 given()
                         .header("Authorization", "Bearer e77d719430c52f24f35e308c36023cfcd90108263e454b1fe8ebda8221624570")
                         .contentType(ContentType.JSON)
                         .body(d)
                         .when()
-                        .post("https://gorest.co.in/public/v1/posts/68/comments")
+                        .post("https://gorest.co.in/public/v1/posts/55/comments")
                         .then()
                         .log().body()
+                        .statusCode(201)
+                        .contentType(ContentType.JSON)
                          .extract().jsonPath().getInt("data.id")
                 ;
         System.out.println("id = " + _id);
@@ -45,7 +47,7 @@ public class GoRestNES {
     @Test(priority = 2)
     public void goRestComments_nested_put() {
 
-        String body1 = "aha la";
+        String body1 = "comment()";
         String body=
                 given()
                         .header("Authorization", "Bearer e77d719430c52f24f35e308c36023cfcd90108263e454b1fe8ebda8221624570")
@@ -56,11 +58,13 @@ public class GoRestNES {
                         .put("https://gorest.co.in/public/v1/comments/{id}")
                         .then()
                         .log().body()
-                       // .body("body.data",equalTo(body1))
+                        .statusCode(200)
+                        .contentType(ContentType.JSON)
+                       .body("data.body",equalTo(body1))
                         .extract().jsonPath().getString("data.body")
 
                 ;
-        //Assert.assertTrue(body.equalsIgnoreCase(d.getBody()));
+        Assert.assertTrue(body.equalsIgnoreCase(body1));
 
     }
 
@@ -93,6 +97,12 @@ public class GoRestNES {
         String random = RandomStringUtils.randomAlphabetic(8).toLowerCase();
         return random + "@gmail.com";
     }
-
-
+    public String name_nachname() {
+        String random = RandomStringUtils.randomAlphabetic(5).toLowerCase();
+        return random ;
+    }
+    public String comment() {
+        String random = RandomStringUtils.randomAlphabetic(5).toLowerCase();
+        return random +random +random ;
+    }
 }
