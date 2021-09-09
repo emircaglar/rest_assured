@@ -1,4 +1,4 @@
-package GoRest.User;
+package GoRest;
 
 
 import GoRest.Posts.Alle;
@@ -16,7 +16,7 @@ import static org.hamcrest.Matchers.*;
 public class goRest_Post_Test {
 
 
-    @Test(priority = 1)
+    @Test(enabled = false)
     public void goRestC_Post_nested() {
 
         Response response =
@@ -43,7 +43,7 @@ public class goRest_Post_Test {
     }
 
     int _id ;
-    @Test(priority = 2)
+    @Test(priority = 1)
     public void goRestC_Post_create() {
 
         String title="bu gunler gecer1";
@@ -75,7 +75,7 @@ public class goRest_Post_Test {
     }
 
   ;
-    @Test(priority = 2)
+    @Test(enabled = false)
     public void goRestC_Post_a_post() {
         List<Data> postData=
                 given()
@@ -95,7 +95,7 @@ public class goRest_Post_Test {
         }
 
     }
-    @Test(dependsOnMethods = "goRestC_Post_create")
+    @Test(enabled = false)
     public void goRestC_Post_aCreate_post() {
 
                 given()
@@ -114,7 +114,7 @@ public class goRest_Post_Test {
     }
 
 
-    @Test(dependsOnMethods = "goRestC_Post_create")
+    @Test(enabled = false)
     public void goRestC_Post_aCreate_uodate() {
 
         String body="bu gunler tabiki gecer gecer de nasil gecer1";
@@ -133,6 +133,33 @@ public class goRest_Post_Test {
                 .contentType(ContentType.JSON)
         .body("data.body",equalTo(body))
 
+        ;
+
+    }
+
+    @Test(dependsOnMethods = "goRestC_Post_create",priority = 2)
+    public void goRestC_Post_aCreate_delete() {
+        given()
+                .header("Authorization", "Bearer e77d719430c52f24f35e308c36023cfcd90108263e454b1fe8ebda8221624570")
+                .contentType(ContentType.JSON)
+                .pathParam("id",_id)
+                .when()
+                .delete("https://gorest.co.in/public/v1/posts/{id}")
+                .then()
+                .statusCode(204)
+        ;
+
+    }
+    @Test(dependsOnMethods = "goRestC_Post_create",priority = 3)
+    public void goRestC_Post_aCreate_delete_negativ() {
+        given()
+                .header("Authorization", "Bearer e77d719430c52f24f35e308c36023cfcd90108263e454b1fe8ebda8221624570")
+                .contentType(ContentType.JSON)
+                .pathParam("id",_id)
+                .when()
+                .delete("https://gorest.co.in/public-api/posts/{id}")
+                .then()
+                .body("code",equalTo(404))
         ;
 
     }

@@ -20,13 +20,14 @@ import static org.hamcrest.Matchers.equalTo;
 
 public class GoRestNES {
     int _id;
-    @Test (priority = 1)
+
+    @Test(priority = 1)
     public void goRestComments_nested() {
-        Data d=new Data();
+        Data d = new Data();
         d.setName(name_nachname());
         d.setEmail(getEmail());
         d.setBody(comment());
-     _id=
+        _id =
                 given()
                         .header("Authorization", "Bearer e77d719430c52f24f35e308c36023cfcd90108263e454b1fe8ebda8221624570")
                         .contentType(ContentType.JSON)
@@ -37,8 +38,8 @@ public class GoRestNES {
                         .log().body()
                         .statusCode(201)
                         .contentType(ContentType.JSON)
-                         .extract().jsonPath().getInt("data.id")
-                ;
+                        .extract().jsonPath().getInt("data.id")
+        ;
         System.out.println("id = " + _id);
 
     }
@@ -48,11 +49,11 @@ public class GoRestNES {
     public void goRestComments_nested_put() {
 
         String body1 = "comment()";
-        String body=
+        String body =
                 given()
                         .header("Authorization", "Bearer e77d719430c52f24f35e308c36023cfcd90108263e454b1fe8ebda8221624570")
                         .contentType(ContentType.JSON)
-                        .pathParam("id",_id)
+                        .pathParam("id", _id)
                         .body("{\"body\":\"" + body1 + "\"}")
                         .when()
                         .put("https://gorest.co.in/public/v1/comments/{id}")
@@ -60,10 +61,8 @@ public class GoRestNES {
                         .log().body()
                         .statusCode(200)
                         .contentType(ContentType.JSON)
-                       .body("data.body",equalTo(body1))
-                        .extract().jsonPath().getString("data.body")
-
-                ;
+                        .body("data.body", equalTo(body1))
+                        .extract().jsonPath().getString("data.body");
         Assert.assertTrue(body.equalsIgnoreCase(body1));
 
     }
@@ -72,12 +71,12 @@ public class GoRestNES {
     @Test(priority = 3)
     public void goRestComments_nested_delete() {
 
-       given()
+        given()
                 .header("Authorization", "Bearer e77d719430c52f24f35e308c36023cfcd90108263e454b1fe8ebda8221624570")
                 .pathParam("id", _id)
                 .when()
                 .delete("https://gorest.co.in/public/v1/comments/{id}")
-               .then()
+                .then()
                 .statusCode(204);
     }
 
@@ -88,21 +87,27 @@ public class GoRestNES {
                 .header("Authorization", "Bearer e77d719430c52f24f35e308c36023cfcd90108263e454b1fe8ebda8221624570")
                 .pathParam("id", _id)
                 .when()
-                .delete("https://gorest.co.in/public/v1/comments/{id}")
+                .delete("https://gorest.co.in/public-api/comments/{id}")
+                //("https://gorest.co.in/public-api/todos/{todoId}")
                 .then()
-                .statusCode(404);
+                //.statusCode(404)
+                .body("code", equalTo(404));
+        ;
+
     }
 
     public String getEmail() {
         String random = RandomStringUtils.randomAlphabetic(8).toLowerCase();
         return random + "@gmail.com";
     }
+
     public String name_nachname() {
         String random = RandomStringUtils.randomAlphabetic(5).toLowerCase();
-        return random ;
+        return random;
     }
+
     public String comment() {
         String random = RandomStringUtils.randomAlphabetic(5).toLowerCase();
-        return random +random +random ;
+        return random + random + random;
     }
 }
