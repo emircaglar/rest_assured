@@ -1,6 +1,6 @@
-package GoRest.Todos;
+package GoRest.Todos1;
 
-import GoRest.Posts.Link;
+
 
 import java.util.List;
 
@@ -10,9 +10,9 @@ public class PaginationT {
     private int pages;
     private int page;
     private int limit;
-    private List<Link> links;
+    private List<LinkT> links;
 
-    public void setLinks(List<Link> links) {
+    public void setLinks(List<LinkT> links) {
         this.links = links;
     }
 

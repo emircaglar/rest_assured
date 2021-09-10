@@ -1,7 +1,8 @@
 package GoRest;
 
 import GoRest.Posts.Data;
-import GoRest.Todos.Datam;
+
+import GoRest.Todos1.DataT;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.testng.annotations.Test;
@@ -12,28 +13,45 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
 public class GoRest_Todo {
-
+    int id = 0;
+    int todos;
     @Test
-    public void goRestC_Post_nested() {
-
-        Response response =
+    public void goRestC_todos_pages() {
+        todos =
                 given()
                         .header("Authorization", "Bearer e77d719430c52f24f35e308c36023cfcd90108263e454b1fe8ebda8221624570")
                         .contentType(ContentType.JSON)
                         .when()
                         .get("https://gorest.co.in/public/v1/todos")
                         .then()
-                        //.log().body()
+                        .log().body()
+                        .statusCode(200)
+                        .contentType(ContentType.JSON)
+                        .extract().jsonPath().getInt("meta.pagination.pages");
+
+    }
+
+    @Test(dependsOnMethods = "goRestC_todos_pages")
+    public void goRestC_Todos_nested() {
+        Response response =
+                given()
+                        .header("Authorization", "Bearer e77d719430c52f24f35e308c36023cfcd90108263e454b1fe8ebda8221624570")
+                        .contentType(ContentType.JSON)
+                        .pathParam("todos_nummer", todos)
+                        .when()
+                        .get("https://gorest.co.in/public/v1/todos?page={todos_nummer}")
+                        .then()
+                        .log().body()
                         .statusCode(200)
                         .contentType(ContentType.JSON)
                         .extract().response();
+        List<DataT> data_class = response.jsonPath().getList("data", DataT.class);
 
-        List<Datam> data_class = response.jsonPath().getList("data", Datam.class);
-       /* int limit = response.jsonPath().getInt("meta.pagination.limit");
-        System.out.println("limit = " + limit);*/
-        for (Datam data : data_class
-        ) {
-            System.out.println("data = " + data);
+        for (int i = 0; i < data_class.size(); i++) {
+            if (data_class.get(i).getId() > id)
+                id = data_class.get(i).getId();
         }
+        System.out.println(id);
+
     }
 }

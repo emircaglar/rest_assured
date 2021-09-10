@@ -1,15 +1,15 @@
 package GoRest.Todos1;
 
-import GoRest.Posts.Pagination;
 
-public class Meta {
-    private GoRest.Posts.Pagination pagination;
 
-    public GoRest.Posts.Pagination getPagination() {
+public class MetaT {
+    private PaginationT pagination;
+
+    public PaginationT getPagination() {
         return pagination;
     }
 
-    public void setPagination(Pagination pagination) {
+    public void setPagination(PaginationT pagination) {
         this.pagination = pagination;
     }
 

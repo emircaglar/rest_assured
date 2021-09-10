@@ -1,7 +1,7 @@
 package GoRest.Todos1;
 
 
-public class Link {
+public class LinkT {
     private  String previous;
     private  String current;
     private  String next;
