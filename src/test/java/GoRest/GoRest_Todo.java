@@ -24,7 +24,7 @@ public class GoRest_Todo {
                         .when()
                         .get("https://gorest.co.in/public/v1/todos")
                         .then()
-                        .log().body()
+                        //.log().body()
                         .statusCode(200)
                         .contentType(ContentType.JSON)
                         .extract().jsonPath().getInt("meta.pagination.pages");
@@ -33,25 +33,28 @@ public class GoRest_Todo {
 
     @Test(dependsOnMethods = "goRestC_todos_pages")
     public void goRestC_Todos_nested() {
-        Response response =
-                given()
-                        .header("Authorization", "Bearer e77d719430c52f24f35e308c36023cfcd90108263e454b1fe8ebda8221624570")
-                        .contentType(ContentType.JSON)
-                        .pathParam("todos_nummer", todos)
-                        .when()
-                        .get("https://gorest.co.in/public/v1/todos?page={todos_nummer}")
-                        .then()
-                        .log().body()
-                        .statusCode(200)
-                        .contentType(ContentType.JSON)
-                        .extract().response();
-        List<DataT> data_class = response.jsonPath().getList("data", DataT.class);
+        for (int i = 1; i <=todos ; i++) {
+            Response response =
+                    given()
+                            .header("Authorization", "Bearer e77d719430c52f24f35e308c36023cfcd90108263e454b1fe8ebda8221624570")
+                            .contentType(ContentType.JSON)
+                            .pathParam("todos_nummer", i)
+                            .when()
+                            .get("https://gorest.co.in/public/v1/todos?page={todos_nummer}")
+                            .then()
+                            //.log().body()
+                            .statusCode(200)
+                            .contentType(ContentType.JSON)
+                            .extract().response();
+            List<DataT> data_class = response.jsonPath().getList("data", DataT.class);
 
-        for (int i = 0; i < data_class.size(); i++) {
-            if (data_class.get(i).getId() > id)
-                id = data_class.get(i).getId();
+            for (int j = 0; j < data_class.size(); j++) {
+                if (data_class.get(j).getId() > id)
+                    id = data_class.get(j).getId();
+            }
+
+
+        }  System.out.println(id);
         }
-        System.out.println(id);
 
-    }
 }
