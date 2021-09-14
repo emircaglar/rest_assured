@@ -3,13 +3,14 @@ package Basqar.Model;
 public class Country {
     private String name;
     private String code;
+    private String id;
 
-    @Override
-    public String toString() {
-        return "Create_contr{" +
-                "name='" + name + '\'' +
-                ", code='" + code + '\'' +
-                '}';
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -26,5 +27,14 @@ public class Country {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    @Override
+    public String toString() {
+        return "Country{" +
+                "name='" + name + '\'' +
+                ", code='" + code + '\'' +
+                ", id='" + id + '\'' +
+                '}';
     }
 }

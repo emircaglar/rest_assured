@@ -42,12 +42,32 @@ public class Country_create {
 
     }
 
+    String Randomname = RandomStringUtils.randomAlphabetic(6) + "qq";
+    String Randomcode = RandomStringUtils.randomAlphabetic(4);
+    String id;
+
     @Test
     public void Create_Country() {
-         String Randomname=RandomStringUtils.randomAlphabetic(6)+"qq";
-         String Randomcode=RandomStringUtils.randomAlphabetic(4);
+        Country country = new Country();
+        country.setName(Randomname);
+        country.setCode(Randomcode);
+        id =
+                given()
+                        .cookies(cookies)
+                        .contentType(ContentType.JSON)
+                        .body(country)
+                        .when()
+                        .post("/school-service/api/countries")
+                        .then()
+                        .log().body()
+                        .statusCode(201)
+                        .body("name", equalTo(Randomname)).
+                        extract().jsonPath().getString("id")
+        ;
+    }
 
-
+    @Test(enabled = false)
+    public void Create_Country_Negative() {
         Country country = new Country();
         country.setName(Randomname);
         country.setCode(Randomcode);
@@ -60,11 +80,30 @@ public class Country_create {
                 .post("/school-service/api/countries")
                 .then()
                 .log().body()
-                .statusCode(201)
-                .body("name",equalTo(Randomname))
+                .statusCode(400)
+                .body("message", equalTo("The Country with Name \"" + Randomname + "\" already exists."))
+        ;
+    }
+
+    @Test(dependsOnMethods = "Create_Country")
+    public void UpDate() {
+        Country country = new Country();
+        country.setId(id);
+        country.setName(Randomname + "dd");
+
+        given()
+                .cookies(cookies)
+                .contentType(ContentType.JSON)
+                .body(country)
+                .when()
+                .put("https://demo.mersys.io/school-service/api/countries")
+                .then()
+                .log().body()
+                .statusCode(200)
 
         ;
 
 
     }
+
 }
