@@ -113,9 +113,11 @@ public class GoRestcommentsTest {
     }
 
     int user_Id;
-public String mail_random(){
-    return RandomStringUtils.randomAlphanumeric(8)+"@gmail.com";
-}
+
+    public String mail_random() {
+        return RandomStringUtils.randomAlphanumeric(8) + "@gmail.com";
+    }
+
     @Test
     public void comments_create() {
         user_Id =
@@ -127,7 +129,7 @@ public String mail_random(){
                         .body("{\n" +
                                 "            \"post_id\": 4,\n" +
                                 "            \"name\": \"Hamsini de Al Git\",\n" +
-                                "            \"email\": \""+mail_random()+"\",\n" +
+                                "            \"email\": \"" + mail_random() + "\",\n" +
                                 "            \"body\": \"Fugit sed velit.\"\n" +
                                 "        }")
                         .post("https://gorest.co.in/public/v1/comments")

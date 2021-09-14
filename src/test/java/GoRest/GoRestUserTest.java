@@ -16,28 +16,28 @@ import static org.hamcrest.Matchers.*;
 
 
 public class GoRestUserTest {
-/*
-    @Test
-    public void getUsers() {
+    /*
+        @Test
+        public void getUsers() {
 
 
-        List<User> user_List =
-                given()
+            List<User> user_List =
+                    given()
 
-                        .when()
-                        .get("https://gorest.co.in/public/v1/users")
-                        .then()
-                        .statusCode(200)
-                        .contentType(ContentType.JSON)
-                        .log().body()
-                        .extract().jsonPath().getList("data", User.class);
+                            .when()
+                            .get("https://gorest.co.in/public/v1/users")
+                            .then()
+                            .statusCode(200)
+                            .contentType(ContentType.JSON)
+                            .log().body()
+                            .extract().jsonPath().getList("data", User.class);
 
-        for (User user : user_List
-        ) {
-            System.out.println("user = " + user);
+            for (User user : user_List
+            ) {
+                System.out.println("user = " + user);
+            }
         }
-    }
-*/
+    */
     int UserId;
 
     @Test(priority = 1)
@@ -72,15 +72,16 @@ public class GoRestUserTest {
                 .body("data.id", equalTo(UserId))
         ;
     }
+
     @Test(priority = 3)
     public void update_user() {
 
-        String isim="daniel";
+        String isim = "daniel";
         given()
                 .contentType(ContentType.JSON)
                 //.log().body()
                 .header("Authorization", "Bearer e77d719430c52f24f35e308c36023cfcd90108263e454b1fe8ebda8221624570")
-                .body("{\"name\":\""+isim+"\"}")
+                .body("{\"name\":\"" + isim + "\"}")
                 .pathParam("id", UserId)
                 .when()
                 .put("https://gorest.co.in/public/v1/users/{id}")
@@ -90,6 +91,7 @@ public class GoRestUserTest {
                 .body("data.name", equalTo(isim))
         ;
     }
+
     @Test(priority = 4)
     public void delete_user() {
 
@@ -114,7 +116,7 @@ public class GoRestUserTest {
 
         given()
                 .header("Authorization", "Bearer e77d719430c52f24f35e308c36023cfcd90108263e454b1fe8ebda8221624570")
-                .pathParam("userID",UserId)
+                .pathParam("userID", UserId)
 
                 .when()
                 .delete("https://gorest.co.in/public/v1/users/{userID}")
@@ -122,26 +124,25 @@ public class GoRestUserTest {
                 .then()
                 .statusCode(404)
         ;
-        System.out.println(UserId+"tekrar silemedik");
+        System.out.println(UserId + "tekrar silemedik");
     }
 
 
     @Test
-    public void responsSample(){
+    public void responsSample() {
 
-        Response response=
+        Response response =
                 given()
-                .when()
-                .get("https://gorest.co.in/public/v1/users")
-                .then()
-                .log().body()
-                .extract().response()
-                ;
+                        .when()
+                        .get("https://gorest.co.in/public/v1/users")
+                        .then()
+                        .log().body()
+                        .extract().response();
 
-        List<User>userList=response.jsonPath().getList("data",User.class);
-        int total=response.jsonPath().getInt("meta.pagination.total");
-        int limit=response.jsonPath().getInt("meta.pagination.limit");
-        User firstUser=response.jsonPath().getObject("data[0]",User.class);
+        List<User> userList = response.jsonPath().getList("data", User.class);
+        int total = response.jsonPath().getInt("meta.pagination.total");
+        int limit = response.jsonPath().getInt("meta.pagination.limit");
+        User firstUser = response.jsonPath().getObject("data[0]", User.class);
 
         System.out.println("firstUser = " + firstUser);
         System.out.println("limit = " + limit);
@@ -152,14 +153,13 @@ public class GoRestUserTest {
     }
 
 
-
     @Test
     public void create_User_HashMap() {
-     Map<String,String> newUser=new HashMap<>();
-     newUser.put("name","mert can");
-     newUser.put("gender","male");
-     newUser.put("status","active");
-     newUser.put("email",getEmail());
+        Map<String, String> newUser = new HashMap<>();
+        newUser.put("name", "mert can");
+        newUser.put("gender", "male");
+        newUser.put("status", "active");
+        newUser.put("email", getEmail());
 
         UserId =
                 given()
@@ -178,7 +178,7 @@ public class GoRestUserTest {
 
     @Test
     public void create_User_Body_Object() {
-        User user=new User();
+        User user = new User();
         user.setName("mahirrr");
         user.setGender("male");
         user.setStatus("active");
@@ -199,7 +199,6 @@ public class GoRestUserTest {
         ;
 
     }
-
 
 
     public String getEmail() {
