@@ -99,7 +99,7 @@ public class Country_create {
                 .put("https://demo.mersys.io/school-service/api/countries")
                 .then()
                 .log().body()
-                .statusCode(200)
+                .statusCode(201)
 
         ;
 
